@@ -1,3 +1,4 @@
+import threading
 import asyncio
 import httpx
 import json
@@ -14,10 +15,10 @@ class QuoteScraper:
                 api = random.choice(self.apis)
                 response = await client.get(api)
                 
-                if api == self.apis[0]:
-                    quote = json.loads(response.text)['quote']
-                elif api == self.apis[1]:
-                    quote = json.loads(response.text)['content']
+                if "content" in response.text:
+                    quote = json.loads(response.text)["content"]
+                else:
+                    quote = json.loads(response.text)["quote"]
 
                 with open(self.quotes_file, "a", encoding="utf-8") as handler:
                     handler.write(f"{quote}\n")
