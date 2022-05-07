@@ -21,14 +21,17 @@ class QuoteScraper:
                 data = json.loads(response.text)
                 
                 if "content" in data:
+                    
                     quote = data["content"]
+                
                 else:
+
                     quote = data["quote"]
 
 
                 with open(self.quotes_file, "a", encoding="utf-8") as handler:
                     
-                    
+
                     handler.write(f"{quote}\n")
                     
                     print(f'\u001b[36;1m[\u001b[0m~\u001b[36;1m] \u001b[0m {api} | Quote   • {quote}')
