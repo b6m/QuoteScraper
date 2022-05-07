@@ -12,17 +12,27 @@ class QuoteScraper:
     async def get_quote(self):
         async with httpx.AsyncClient() as client:
             while True:
+
+
                 api = random.choice(self.apis)
+                
                 response = await client.get(api)
                 
-                if "content" in response.text:
-                    quote = json.loads(response.text)["content"]
+                data = json.loads(response.text)
+                
+                if "content" in data:
+                    quote = data["content"]
                 else:
-                    quote = json.loads(response.text)["quote"]
+                    quote = data["quote"]
+
 
                 with open(self.quotes_file, "a", encoding="utf-8") as handler:
+                    
+                    
                     handler.write(f"{quote}\n")
+                    
                     print(f'\u001b[36;1m[\u001b[0m~\u001b[36;1m] \u001b[0m {api} | Quote   • {quote}')
+                    
                     await asyncio.sleep(0.00009)
 
 async def run():
